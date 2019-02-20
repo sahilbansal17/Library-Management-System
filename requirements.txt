@@ -1,0 +1,4 @@
+pymysql
+faker
+myapp
+factory_boy
