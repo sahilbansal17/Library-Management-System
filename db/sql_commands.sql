@@ -183,14 +183,17 @@ select max_books from Issue_Capacity, User where user_id = 1 and User.user_type 
 -- display all the books with all the details issued to a user
 
 
+
+
 -- generating some simple data
-insert into Book values (1, 'abc', 2011, 1234567890, 1000, NULL, '2019-02-20 17:00:00', NULL, NULL);
 
-insert into User values (1, 'xyz', 'xzy123', 'qwerty@123', 'xyz@gmail.com', 'Student');
+-- insert into Book values (1, 'abc', 2011, 1234567890, 1000, NULL, '2019-02-20 17:00:00', NULL, NULL);
 
-insert into Periodical values (1, 'abc', 2011, 1, 1234567890, NULL, NULL);
-insert into Periodical values (2, 'abc', 2011, 2, 1234567890, NULL, NULL);
+-- insert into User values (1, 'xyz', 'xzy123', 'qwerty@123', 'xyz@gmail.com', 'Student');
 
-insert into Author values (1, 'author1');
-insert into Paper values (1, 'paper1', 1);
-insert into Publisher values (1, 'pub1');
+-- insert into Periodical values (1, 'abc', 2011, 1, 1234567890, NULL, NULL);
+-- insert into Periodical values (2, 'abc', 2011, 2, 1234567890, NULL, NULL);
+
+-- insert into Author values (1, 'author1');
+-- insert into Paper values (1, 'paper1', 1);
+-- insert into Publisher values (1, 'pub1');

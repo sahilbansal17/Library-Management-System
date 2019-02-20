@@ -222,3 +222,30 @@ for i in range(num_periodical_and_tags):
 		'tag_id': tag_id 
 	})
 	add_into_table('Periodical_and_Tag', periodical_and_tags[i])
+
+book_and_tags = []
+num_book_and_tags = 100
+
+for i in range(num_book_and_tags):
+	book_id = random.randint(1, num_books)
+	tag_id = random.randint(1, num_tags)
+	book_and_tags.append({
+		'book_id': book_id,
+		'tag_id': tag_id 
+	})
+	add_into_table('Book_and_Tag', book_and_tags[i])
+
+book_and_disciplines = []
+num_book_and_disciplines = 100
+
+disciplines = ["CSE", "ME", "CE", "EE", "Maths", "Physics", "Chemistry", "Hindi", "English"]
+
+for i in range(num_book_and_disciplines):
+	book_id = random.randint(1, num_books)
+	discipline = random.randint(1, len(disciplines) - 1)
+	discipline = disciplines[discipline]
+	book_and_disciplines.append({
+		'book_id': book_id,
+		'discipline': discipline 
+	})
+	add_into_table('Book_and_Discipline', book_and_disciplines[i])
