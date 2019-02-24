@@ -1,15 +1,196 @@
-\documentclass[]{article}
+\documentclass{article}
+\usepackage[utf8]{inputenc}
 \usepackage{graphicx, float}
 \usepackage{hyperref}
 \usepackage{listings}
 \usepackage{longtable}
 \usepackage{multirow}
+\usepackage{xcolor}
 
-\title{\centering CSP362 : Database Management Systems \\Assignment - 1}
-\author{Sahil\\  2016UCS0008}
+\title{CSP362: Database Management Systems - Assignment 1}
+\author{SAHIL - 2016UCS0008}
+\date{February 24, 2019}
+
 \begin{document}
-	
-	\maketitle	
-	
+
+\maketitle
+
+\section{Introduction}
+\large
+In this assignment, an ER diagram for library is provided. We have to create a database for \textbf{Library Management System} in \textit{mysql} for deployment at \textbf{IIT Jammu}.
+
+\section{Entities and Relationships}
+The color scheme followed to list the attributes is as follows:
+
+\item - {\color{blue}blue} for \textbf{Primary Key}.
+\item - {\color{red}red} for \textbf{Foreign Key}.
+\item - {\color{green}green} for new attributes which are described in later sections. 
+
+
+\begin{itemize}
+    \item The following entities are required:
+        \begin{itemize}
+            \item \textbf{Book}
+                \begin{itemize}
+                    \item {\color{blue}book\_id}
+                    \item title
+                    \item year
+                    \item isbn
+                    \item pages
+                    \item {\color{red}user\_id}
+                    \item add\_time
+                    \item {\color{red}publisher\_id}
+                    \item issue\_tiem
+                \end{itemize}
+            \item \textbf{User}
+                \begin{itemize}
+                    \item {\color{blue}user\_id}
+                    \item name
+                    \item username
+                    \item password
+                    \item email
+                    \item {\color{green}user\_type}
+                \end{itemize}
+            \item \textbf{Periodical}
+                \begin{itemize}
+                    \item {\color{blue}periodical\_id}
+                    \item title
+                    \item year
+                    \item volume
+                    \item isbn
+                    \item {\color{red}user\_id}
+                    \item {\color{red}publisher\_id}
+                    \item add\_time
+                    \item issue\_time
+                \end{itemize}
+            \item \textbf{Author}
+                \begin{itemize}
+                    \item {\color{blue}author\_id}
+                    \item name
+                \end{itemize}
+            \item \textbf{Paper}
+                \begin{itemize}
+                    \item {\color{blue}paper\_id}
+                    \item name
+                    \item {\color{red}periodical\_id}
+                \end{itemize}
+            \item \textbf{Publisher}
+                \begin{itemize}
+                    \item {\color{blue}publisher\_id}
+                    \item name
+                \end{itemize}
+            \item \textbf{Tag}
+                \begin{itemize}
+                    \item {\color{blue}tag\_id}
+                    \item value
+                \end{itemize}
+            \item \textbf{Message}
+                \begin{itemize}
+                    \item {\color{blue}message\_id}
+                    \item text
+                    \item {\color{red}user\_id}
+                    \item time
+                \end{itemize}
+            \item \textbf{{\color{green}Issue\_Capacity}}
+                \begin{itemize}
+                    \item {\color{blue}user\_type}
+                    \item max\_books
+                    \item max\_time
+                \end{itemize}
+        \end{itemize}
+    \item The following relationships are required:
+        \begin{itemize}
+            \item \textbf{Book\_and\_Author}
+                \begin{itemize}
+                    \item {\color{blue}book\_id}
+                    \item {\color{blue}author\_id}
+                \end{itemize}
+            \item \textbf{Paper\_and\_Author}
+                \begin{itemize}
+                    \item {\color{blue}paper\_id}
+                    \item {\color{blue}author\_id}
+                \end{itemize}
+            \item \textbf{Book\_and\_Tag}
+                \begin{itemize}
+                    \item {\color{blue}book\_id}
+                    \item {\color{blue}tag\_id}
+                \end{itemize}
+            \item \textbf{Periodical\_and\_Tag}
+                \begin{itemize}
+                    \item {\color{blue}periodical\_id}
+                    \item {\color{blue}tag\_id}
+                \end{itemize}
+            \item \textbf{{\color{green}Book\_and\_Discipline}}
+                \begin{itemize}
+                    \item {\color{blue}book\_id}
+                    \item {\color{blue}discipline}
+                \end{itemize}
+        \end{itemize}
+\end{itemize}
+
+\section{Normalizing the database upto BCNF}
+\subsection{1NF} The database design is already in \textbf{first normal form} since there is no field which is multi-valued.
+\subsection{2NF} It is already in \textbf{second normal form} as there is no partial dependency of any non-key attribute on any key attribute. This is because all entity tables have single attribute as key, and for the relationship tables, there are only two attributes which themselves are part of the key.
+\subsection{3NF} To remove the transitive dependencies in the \textbf{User} table, 
+
+\[user\_id \rightarrow user\_type\]
+\[user\_type \rightarrow \{max\_books, max\_time\}\]
+
+A new table \textbf{\color{green}Issue\_Capacity} has been created. 
+So, the database is now in \textbf{3NF}.
+\subsection{BCNF} It is already in BCNF since for all functional dependencies $$\textbf{A} \rightarrow \textbf{B},$ A cannot be a non-prime attribute if B is a prime attribute. 
+
+\section{Implementing the tables in DBMS}
+\subsection{Inserting at least 100 records for Book and User tables:}
+Dummy records have been inserted in all the tables using the python library \textbf{faker}.
+
+All the code for this is available in \textit{src/generate\_data.py} file.
+
+\subsection{Modifying User table to add an attribute user\_type: } This modification has been done as mentioned in {\color{green}green}. 
+
+\subsection{Maximum capacity of books and time of issuing:} 
+This constraint has been ensured by fixing {\color{green}max\_books} and {\color{green}max\_time} in the table \textbf{\color{green}Issue\_Capacity}.
+
+\section{Performing Queries on LMS}
+\begin{itemize}
+    \item Listing all the tables and their attributes
+    \item Displaying total inventory in the LMS
+    \item Listing the no. of available books requested by a user
+    \item Listing the author(s) of a given book
+    \item Listing the total no. of books issued for a user
+    \item Checking whether a user is allowed to borrow a book or not
+    \item Listing the no. of books issued and returned on a daily basis (for a given day/period)
+    \item Listing the users with book details if there are any dues
+    \item Listing the newly added book records for a given period
+    \item Displaying the user name and the books issued to them
+    \item Displaying all the books with all the details issued to a user
+\end{itemize}
+
+\section{Queries in Relational Algebra Notation}
+\begin{itemize}
+    \item Listing all the tables and their attributes
+    \item Displaying total inventory in the LMS
+    \item Listing the no. of available books requested by a user
+    \item Listing the author(s) of a given book
+    \item Listing the total no. of books issued for a user
+    \item Checking whether a user is allowed to borrow a book or not
+    \item Listing the no. of books issued and returned on a daily basis (for a given day/period)
+    \item Listing the users with book details if there are any dues
+    \item Listing the newly added book records for a given period
+    \item Displaying the user name and the books issued to them
+    \item Displaying all the books with all the details issued to a user
+\end{itemize}
+
+\section{Computing the fine for users and showing all users having dues}
+The fine to be imposed on a user after the due date is \textbf{Rs 1}/day excluding Saturdays and Sundays. 
+
+\section{Modifying Book table to add the attribute 'Discipline'}
+Instead of modfiying the book table to add discipline since one book can bu multi-disciplinary, a new table \textbf{\color{green}Book\_and\_Discipline} has been created. 
+
+\section{Developing GUI for LMS in Python}
+The GUI is to be developed using either \textbf{PyQt} or \textbf{Tkinter}.
+
+\section{Reserving the issued books}
+Once all the requested books are issued, they need to be reserved so that whenever the books is returned, it should be issued to the requested user. 
 
 \end{document}
