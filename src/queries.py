@@ -58,7 +58,7 @@ def available_books(book_name):
 	pretty_print(cursor, data)
 
 def author_of_book(book_name):
-	select = "select Author.author_id, name from Author, Book_and_Author, Book "
+	select = "select Author.* from Author, Book_and_Author, Book "
 	condition = """where Book_and_Author.book_id = Book.book_id and 
 					Book_and_Author.author_id = Author.author_id and
 					Book.title = \"""" + book_name + "\";" 
@@ -75,6 +75,7 @@ def issued_books_by_user(user_name):
 	cursor.execute(sql_query)
 	data = cursor.fetchall()
 	pretty_print(cursor, data)
+	return data[0][0]
 
 def isssue_allowed(user_name):
 	num_issued = issued_books_by_user(user_name)
@@ -90,10 +91,14 @@ def isssue_allowed(user_name):
 		max_allowed = data[0][0]
 	else:
 		max_allowed = 2
-	if (num_issued < max_allowed):
-		print("The user is allowed to issue another book!")
-	else:
-		print("The user is not allowed to issue another book!")
+	# if (num_issued < max_allowed):
+	# 	print("The user is allowed to issue another book!")
+	# else:
+	# 	print("The user is not allowed to issue another book!")
+	sql_query = "select if (" + str(num_issued) + " < " + str(max_allowed) + ", \"Allowed to issue\", \"Not allowed to issue\");"
+	cursor.execute(sql_query)
+	data = cursor.fetchall()
+	pretty_print(cursor, data)
 
 def books_issued_stats(start_daytime, end_daytime):
 	select = "select count(*) from Borrow_Book where "

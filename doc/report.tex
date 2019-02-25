@@ -6,6 +6,7 @@
 \usepackage{longtable}
 \usepackage{multirow}
 \usepackage{xcolor}
+\usepackage{amsmath}
 
 \title{CSP362: Database Management Systems - Assignment 1}
 \author{SAHIL - 2016UCS0008}
@@ -188,16 +189,29 @@ All the following queries have been performed and are available in $\textit{src/
 The relational algebra notation for each of the following queries is provided below:
 \begin{itemize}
     \item Listing all the tables and their attributes
+    \[\sigma_{table\_schema='lms'} (information\_schema.columns)\]
     \item Displaying total inventory in the LMS
+    \[G_{count(*)}(table\_name)\]
     \item Listing the no. of available books requested by a user
-    \item Listing the author(s) of a given book
+    \[G_{count(*)}(\sigma_{title = 'book\_name'}(Book))\]
+    \item Listing the author(s) of a given 
+    \[\pi_{Author.*}(\sigma_{\substack{Book\_and\_Author.book\_id = Book.book\_id \\ \wedge Book\_and\_Author.author\_id = Author.author\_id \\ \wedge Book.title = 'book\_name' }}(Author \times Book\_and\_Author \times Book))\]
     \item Listing the total no. of books issued for a user
+    \[G_{count(*)}(\sigma_{Book.user\_id = User.user\_id \wedge User.name = 'user\_name'}(Book))\]
     \item Checking whether a user is allowed to borrow a book or not
+    \[num\_issued \ \leftarrow \ G_{count(*)}(\sigma_{Book.user\_id = User.user\_id \wedge User.name = 'user\_name'}(Book))\]
+    \[max\_allowed \ \leftarrow \ \pi_{max\_books}(\sigma_{\substack{\ User.user\_type \ = \ Issue\_Capacity.user\_type \\ \wedge \ User.name = 'user\_name'}}(Issue\_Capacity \times User))\]
+    \[\sigma (if(num\_issued \ < \ max\_allowed, "Allowed", "Not \ allowed"))\]
     \item Listing the no. of books issued and returned on a daily basis (for a given day/period)
+    \[G_{count(*)}(\sigma_{\substack{issue\_time >= 'start\_daytime' \\ \wedge (return\_time <= 'end\_daytime'\ \vee \ return\_time \ is \ NULL) }}(Borrow\_Book))\]
     \item Listing the users with book details if there are any dues
+    \[\pi_{User.user\_id,\ name}(\sigma_{\substack{User.user\_id = Borrow\_Book.user\_id \\ \wedge \ due\_amount \ > \ 0 }}(User \times Borrow\_Book))\]
     \item Listing the newly added book records for a given period
+    \[\sigma_{\substack{add\_time \ >= \ 'start\_daytime' \\ \wedge \ add\_time \ <= \ 'end\_daytime'}}(Book)\]
     \item Displaying the user name and the books issued to them
+    \[\pi_{Book.user\_id,\ User.name, \ book\_id, \ title}(\sigma_{User.user\_id = Book.user\_id}(Book \times User))\]
     \item Displaying all the books with all the details issued to a user
+    \[\pi_{Book.*}(\sigma_{\substack{User.user\_id \ = \ Book.user\_id \\ \wedge User.name \ = \ 'user\_name'}}(Book \times User))\]
 \end{itemize}
 
 \section{Computing the fine for users and showing all users having dues}
