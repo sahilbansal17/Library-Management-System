@@ -1,7 +1,3 @@
--- create a user for lms
-create user 'admin'@'localhost' identified by 'admin';
-grant all privileges on lms.* to 'admin'@'localhost';
-	
 -- question no. 3, designing and implementing the various tables in mysql database 'lms'
 create database lms;
 
@@ -107,6 +103,7 @@ alter table Paper add constraint FOREIGN KEY (periodical_id) references Periodic
 -- relationship tables
 alter table Book_and_Author add constraint FOREIGN KEY (book_id) references Book(book_id);
 alter table Book_and_Tag add constraint FOREIGN KEY (book_id) references Book(book_id);
+alter table Book_and_Discipline add constraint FOREIGN KEY (book_id) references Book(book_id);
 alter table Book_and_Author add constraint FOREIGN KEY (author_id) references Author(author_id);
 alter table Paper_and_Author add constraint FOREIGN KEY (author_id) references Author(author_id);
 alter table Paper_and_Author add constraint FOREIGN KEY (paper_id) references Paper(paper_id);
@@ -136,7 +133,6 @@ create table Book_and_Discipline(
 	discipline varchar(50),
 	PRIMARY KEY(book_id, discipline)
 );
-alter table Book_and_Discipline add constraint FOREIGN KEY (book_id) references Book(book_id);
 
 -- generating some simple data
 -- insert into Book values (1, 'abc', 2011, 1234567890, 1000, NULL, '2019-02-20 17:00:00', NULL, NULL);

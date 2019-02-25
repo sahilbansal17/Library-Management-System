@@ -26,7 +26,6 @@ The color scheme followed to list the attributes is as follows:
 \item - {\color{red}red} for \textbf{Foreign Key}.
 \item - {\color{green}green} for new attributes which are described in later sections. 
 
-
 \begin{itemize}
     \item The following entities are required:
         \begin{itemize}
@@ -40,7 +39,7 @@ The color scheme followed to list the attributes is as follows:
                     \item {\color{red}user\_id}
                     \item add\_time
                     \item {\color{red}publisher\_id}
-                    \item issue\_tiem
+                    \item issue\_time
                 \end{itemize}
             \item \textbf{User}
                 \begin{itemize}
@@ -125,6 +124,24 @@ The color scheme followed to list the attributes is as follows:
                     \item {\color{blue}book\_id}
                     \item {\color{blue}discipline}
                 \end{itemize}
+            \item \textbf{{\color{green}Borrow\_Book}}
+                \begin{itemize}
+                    \item {\color{blue}borrow\_id}
+                    \item {\color{red}book\_id}
+                    \item {\color{red}user\_id}
+                    \item issue\_time
+                    \item return\_time
+                    \item due\_amount
+                \end{itemize}
+            \item \textbf{{\color{green}Borrow\_Periodical}}
+                \begin{itemize}
+                    \item {\color{blue}borrow\_id}
+                    \item {\color{red}periodical\_id}
+                    \item {\color{red}user\_id}
+                    \item issue\_time
+                    \item return\_time
+                    \item due\_amount
+                \end{itemize}
         \end{itemize}
 \end{itemize}
 
@@ -138,7 +155,7 @@ The color scheme followed to list the attributes is as follows:
 
 A new table \textbf{\color{green}Issue\_Capacity} has been created. 
 So, the database is now in \textbf{3NF}.
-\subsection{BCNF} It is already in BCNF since for all functional dependencies $$\textbf{A} \rightarrow \textbf{B},$ A cannot be a non-prime attribute if B is a prime attribute. 
+\subsection{BCNF} It is already in BCNF since for all functional dependencies $\textbf{A} \rightarrow \textbf{B},$ A cannot be a non-prime attribute if B is a prime attribute. 
 
 \section{Implementing the tables in DBMS}
 \subsection{Inserting at least 100 records for Book and User tables:}
@@ -152,6 +169,7 @@ All the code for this is available in \textit{src/generate\_data.py} file.
 This constraint has been ensured by fixing {\color{green}max\_books} and {\color{green}max\_time} in the table \textbf{\color{green}Issue\_Capacity}.
 
 \section{Performing Queries on LMS}
+All the following queries have been performed and are available in $\textit{src/queries.py}$ file.
 \begin{itemize}
     \item Listing all the tables and their attributes
     \item Displaying total inventory in the LMS
@@ -167,6 +185,7 @@ This constraint has been ensured by fixing {\color{green}max\_books} and {\color
 \end{itemize}
 
 \section{Queries in Relational Algebra Notation}
+The relational algebra notation for each of the following queries is provided below:
 \begin{itemize}
     \item Listing all the tables and their attributes
     \item Displaying total inventory in the LMS

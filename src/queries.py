@@ -1,8 +1,10 @@
 import pymysql
 
-db = pymysql.connect("localhost", "sahilbansal", "iamalive", "lms")
+# connect with the database
+db = pymysql.connect("localhost", "admin", "admin", "lms")
 cursor = db.cursor()
 
+# function to prettify the output obtained by using cursor.fetchall()
 def pretty_print(cursor, data=None, rowlens=0):
     d = cursor.description
     if not d:
@@ -15,7 +17,7 @@ def pretty_print(cursor, data=None, rowlens=0):
     for dd in d:    # iterate over description
         l = dd[1]
         if not l:
-            l = 12             # or default arg ...
+            l = 12            # or default arg ...
         l = max(l, len(dd[0])) # Handle long names
         names.append(dd[0])
         lengths.append(l)
@@ -84,11 +86,58 @@ def isssue_allowed(user_name):
 	cursor.execute(sql_query)
 	data = cursor.fetchall()
 	pretty_print(cursor, data)
-	max_allowed = data[0][0]
+	if(len(data) != 0 and len(data[0]) != 0):
+		max_allowed = data[0][0]
+	else:
+		max_allowed = 2
 	if (num_issued < max_allowed):
 		print("The user is allowed to issue another book!")
 	else:
 		print("The user is not allowed to issue another book!")
+
+def books_issued_stats(start_daytime, end_daytime):
+	select = "select count(*) from Borrow_Book where "
+	condition = "issue_time >= \"" + start_daytime + "\" and "
+	condition += "(return_time <= \"" + end_daytime + "\""
+	condition += "or return_time IS NULL);"
+	sql_query = select + condition
+	# print(sql_query)
+	cursor.execute(sql_query)
+	data = cursor.fetchall()
+	pretty_print(cursor, data)
+
+def users_with_dues():
+	select = "select User.user_id, name from User, Borrow_Book where "
+	condition = "User.user_id = Borrow_Book.user_id and due_amount > 0;"
+	sql_query = select + condition
+	cursor.execute(sql_query)
+	data = cursor.fetchall()
+	pretty_print(cursor, data)
+
+def new_books(start_daytime, end_daytime):
+	select = "select * from Book where "
+	condition = "add_time >= \"" + start_daytime + "\" and "
+	condition += "add_time <= \"" + end_daytime + "\";"
+	sql_query = select + condition
+	cursor.execute(sql_query)
+	data = cursor.fetchall()
+	pretty_print(cursor, data)
+
+def display_issued_books_all():
+	select = "select Book.user_id, User.name, book_id, title from Book, User where "
+	condition = "User.user_id = Book.user_id;"
+	sql_query = select + condition
+	cursor.execute(sql_query)
+	data = cursor.fetchall()
+	pretty_print(cursor, data)
+
+def display_issued_books_by_user(user_name):
+	select = "select Book.* from Book, User where "
+	condition = "User.user_id = Book.user_id and User.name = \"" + user_name + "\";"
+	sql_query = select + condition
+	cursor.execute(sql_query)
+	data = cursor.fetchall()
+	pretty_print(cursor, data)
 
 
 print("============================================================================================")
@@ -110,4 +159,24 @@ print("=========================================================================
 
 print("Query 6: Checking whether a user is allowed to borrow a book or not")
 isssue_allowed("Frank Hall")
+print("============================================================================================")
+
+print("Query 7: Listing the no. of books issued and returned on a daily basis (for a given day/period)")
+books_issued_stats("2019-01-01 00:00:00", "2020-01-01 00:00:00")
+print("============================================================================================")
+
+print("Query 8: Listing the users with book details if there are any dues")
+users_with_dues()
+print("============================================================================================")
+
+print("Query 9: Listing the newly added book records for a given period")
+new_books("2018-01-01 00:00:00", "2019-01-01 00:00:00")
+print("============================================================================================")
+
+print("Query 10: Displaying the user name and the books issued to them")
+display_issued_books_all()
+print("============================================================================================")
+
+print("Query 10: Displaying all the books with all the details issued to a user")
+display_issued_books_by_user("Natalie Harris")
 print("============================================================================================")

@@ -1,16 +1,17 @@
-import pymysql
-from faker import Faker 
+import pymysql # for mysql
+from faker import Faker # for generating random data
 import factory 
 import random 
 
-db = pymysql.connect("localhost", "sahilbansal", "iamalive", "lms")
+# connect to the database
+db = pymysql.connect("localhost", "admin", "admin", "lms")
+# crate a cursor object using the cursor() method
 cursor = db.cursor()
-# cursor.execute("SELECT * FROM User")
-# data = cursor.fetchall()
-# print(data)
 
+# create Faker object using the Faker() method
 fake = Faker()
 
+# general function to add a row into a table
 def add_into_table(table_name, row):
 	# table_name is the table name, row is the dictionary containing key and value mappings
 	sql_query = "INSERT INTO " + table_name + " Values("
@@ -146,7 +147,6 @@ for i in range(num_papers):
 		'periodical_id': 'NULL'
 	})
 	add_into_table('Paper', papers[i])
-# ---------------------------
 
 tags = []
 num_tags = 100
@@ -185,7 +185,6 @@ for i in range(num_book_and_authors):
 		'user_id': user_id 
 	})
 	add_into_table('Book_and_Author', book_and_authors[i])
-# -----------------------
 
 book_and_tags = []
 num_book_and_tags = 100
