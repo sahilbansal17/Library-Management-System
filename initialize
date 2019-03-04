@@ -2,6 +2,8 @@
 
 sudo mysql < db/sql_commands.sql
 
+apt-get install python3-tk
+
 pip3 install -r requirements.txt
 
 python3 db/generate_data.py
