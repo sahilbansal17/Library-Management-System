@@ -19,31 +19,11 @@ except ImportError:
     import tkinter.ttk as ttk
     py3 = True
 
-import list_books
-def show_books():
-    clear_root()
-    list_books.create_ListBook(root)
-
-import list_periodicals
-def show_periodicals():
-    clear_root()
-    list_periodicals.create_ListPeriodical(root)
-
-import list_users
-def show_users():
-    clear_root()
-    list_users.create_ListUsers(root)
-
 def init(top, gui, *args, **kwargs):
     global w, top_level, root
     w = gui
     top_level = top
     root = top
-
-def clear_root():
-    list = root.grid_slaves()
-    for l in list:
-        l.destroy()
 
 def destroy_window():
     # Function which closes the window.
@@ -52,8 +32,8 @@ def destroy_window():
     top_level = None
 
 if __name__ == '__main__':
-    import lms
-    lms.vp_start_gui()
+    import list_periodicals
+    list_periodicals.vp_start_gui()
 
 
 
