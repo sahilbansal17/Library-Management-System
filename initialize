@@ -4,4 +4,10 @@ sudo mysql < db/sql_commands.sql
 
 pip3 install -r requirements.txt
 
-python3 src/generate_data.py
+python3 db/generate_data.py
+
+python3 db/queries.py
+
+# for creating an installer in fbs
+# sudo apt-get install ruby ruby-dev rubygems build-essential
+# sudo gem install --no-ri --no-rdoc fpm

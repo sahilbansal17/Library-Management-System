@@ -2,3 +2,6 @@ pymysql
 faker
 myapp
 factory_boy
+fbs
+PySide2
+PyInstaller==3.4
