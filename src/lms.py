@@ -84,7 +84,7 @@ class Toplevel1:
                 background="#d9d9d9",
                 font="TkMenuFont",
                 foreground="#000000",
-                label="Add Book")
+                label="Add Book", command=lms_support.add_book_command)
         self.sub_menu.add_command(
                 activebackground="#ececec",
                 activeforeground="#000000",
